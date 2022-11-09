@@ -23,8 +23,9 @@ def main(args):
     with open(file, 'rb') as js:
         # Obtain meta tag
         js.seek(-0x100, os.SEEK_END)
-        lastbytes = str(js.read(0x100))
-        metatagstr = re.search('("meta":(\s+)?{.*})}', lastbytes, re.MULTILINE | re.IGNORECASE).group(1)
+        #this is the bug. only works in python2
+        lastbytes = js.read(0x100).decode("utf-8")
+        metatagstr = re.search('("meta":(\s+)?{.*})', lastbytes, re.MULTILINE | re.IGNORECASE).group(1)
         metatag = json.loads('{' + metatagstr + '}')
 
     # Open in text mode to parse
