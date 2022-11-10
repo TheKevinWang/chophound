@@ -13,7 +13,7 @@ def main(args):
     # Collect args
     file = args.file
     chunksize = args.chunksize
-
+    outdir = args.output if args.output[-1] == '/' else args.output + '/'
     # Fixed variables
     basename = os.path.splitext(os.path.basename(file))[0]
     jsonformat = '{"data":[%s],"meta":%s}'
@@ -35,7 +35,7 @@ def main(args):
         endoflist = False
         i = 0
         while True:
-            outfile = '%s_%.4d.json' % (basename, i)
+            outfile = outdir + '%s_%.4d.json' % (basename, i)
 
             # Get chunk
             chunks = []
@@ -70,6 +70,7 @@ def getargs():
     )
     parser.add_argument('file', help='JSON file to split')
     parser.add_argument('-c', '--chunksize', default=500, type=int, dest='chunksize', help='Number of items per outputted chunk')
+    parser.add_argument('-o', '--output', default='./', type=str, dest='output', help='Output directory. Defaults to current directory.')
 
     return parser.parse_args()
 
