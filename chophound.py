@@ -2,6 +2,7 @@ import os
 import re
 import argparse
 import json
+import gc
 try:
     import ijson.backends.python as ijson
 except (ImportError, ModuleNotFoundError):
@@ -36,10 +37,10 @@ def main(args):
         i = 0
         while True:
             outfile = outdir + '%s_%.4d.json' % (basename, i)
-
             # Get chunk
             chunks = []
             count = 0
+            gc.collect()
             try:
                 while True:
                     item = next(items)
